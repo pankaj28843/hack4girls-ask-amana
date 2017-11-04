@@ -1,11 +1,17 @@
-import { Text, View, StyleSheet, ScrollView, ToastAndroid, Platform } from 'react-native';
-import React, { Component, PropTypes } from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {Component, PropTypes} from 'react';
 
-import { ListItem, Subheader, Toolbar } from 'react-native-material-ui/src';
+import {Card, Subheader, Toolbar} from 'react-native-material-ui';
+import routes from '../routes';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    questionText: {
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 15,
     },
 });
 
@@ -17,10 +23,57 @@ const contextTypes = {
     uiTheme: PropTypes.object.isRequired,
 };
 
+
+const allQuestions = [
+    {
+        id: 1,
+        'title': 'How to know if I am pregnant or not?',
+        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet mollis nisl. Etiam ut massa sodales, gravida tortor eget, sagittis nisl. Donec finibus nunc quis ullamcorper pharetra. Donec facilisis sed ante efficitur blandit. Nullam tellus dolor, posuere nec rhoncus nec, facilisis ut leo. Suspendisse posuere n',
+        'tags': ['pregnancy',],
+    },
+    {
+        id: 2,
+        'title': 'How to know if I am pregnant or not?',
+        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet mollis nisl. Etiam ut massa sodales, gravida tortor eget, sagittis nisl. Donec finibus nunc quis ullamcorper pharetra. Donec facilisis sed ante efficitur blandit. Nullam tellus dolor, posuere nec rhoncus nec, facilisis ut leo. Suspendisse posuere n',
+        'tags': ['bleeding', 'urgent'],
+    },
+    {
+        id: 3,
+        'title': 'How to know if I am pregnant or not?',
+        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet mollis nisl. Etiam ut massa sodales, gravida tortor eget, sagittis nisl. Donec finibus nunc quis ullamcorper pharetra. Donec facilisis sed ante efficitur blandit. Nullam tellus dolor, posuere nec rhoncus nec, facilisis ut leo. Suspendisse posuere n',
+        'tags': ['violence', 'urgent'],
+    },
+];
+
 class QuestionList extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            questions: [],
+        };
+    }
+
+
+    componentDidMount() {
+        this.fetchQuestions();
+    }
+
+    fetchQuestions() {
+        this.setState({
+            questions: allQuestions,
+        });
+    }
+
     render() {
-        const { listItem } = this.context.uiTheme;
-        const flattenPrimaryText = StyleSheet.flatten(listItem.primaryText);
+        const questionCards = this.state.questions.map(question =>
+            <Card key={question.id} onPress={() => this.props.navigator.push(routes.question)}>
+                <Subheader text={question.title} />
+                <Text style={styles.questionText}>
+                    {question.description}
+                </Text>
+            </Card>
+        );
 
         return (
             <View style={styles.container}>
@@ -30,132 +83,7 @@ class QuestionList extends Component {
                     centerElement={this.props.route.title}
                 />
                 <ScrollView style={styles.container}>
-                    <Subheader text="One line" />
-                    <ListItem
-                        divider
-                        centerElement="Center element as a text"
-                        onPress={() => {}}
-                    />
-                    <ListItem
-                        divider
-                        centerElement={{
-                            primaryText: 'Center element as an object',
-                        }}
-                        onPress={() => {}}
-                    />
-                    <ListItem
-                        divider
-                        centerElement="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                    />
-                    <ListItem
-                        divider
-                        dense
-                        centerElement="Center element as a text (dense)"
-                    />
-                    <Subheader text="One line with icon" />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        centerElement={{
-                            primaryText: 'Center element as an object',
-                        }}
-                        onPress={() => {}}
-                    />
-
-
-                    <Subheader text="Two lines" />
-                    <ListItem
-                        divider
-                        dense
-                        centerElement={{
-                            primaryText: 'Center element as an object (dense)',
-                            secondaryText: 'Pellentesque commodo ultrices diam. Praesent in ipsum',
-                        }}
-                    />
-                    <ListItem
-                        divider
-                        centerElement={{
-                            primaryText: 'Center element as an object',
-                            secondaryText: 'Subtext',
-                        }}
-                    />
-                    <Subheader text="Two lines with icon" />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        centerElement={{
-                            primaryText: 'Center element as an object',
-                            secondaryText: 'Subtext',
-                        }}
-                    />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        centerElement={{
-                            primaryText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-                            secondaryText: 'Pellentesque commodo ultrices diam. Praesent in ipsum',
-                        }}
-                        rightElement="info"
-                        onLeftElementPress={() => {
-                            if (Platform.OS === 'android') {
-                                ToastAndroid.show('Left element pressed', ToastAndroid.SHORT);
-                            }
-                        }}
-                        onPress={() => ToastAndroid.show('List item pressed', ToastAndroid.SHORT)}
-                        onRightElementPress={() => {
-                            if (Platform.OS === 'android') {
-                                ToastAndroid.show('Right element pressed', ToastAndroid.SHORT);
-                            }
-                        }}
-                    />
-                    <Subheader text="Three lines" />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        centerElement={{
-                            primaryText: 'Center element as an object',
-                            secondaryText: 'Pellentesque commodo ultrices diam. Praesent in ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing.',
-                        }}
-                        numberOfLines={3}
-                    />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        centerElement={{
-                            primaryText: 'Center element as an object',
-                            secondaryText: 'Pellentesque commodo ultrices diam. Praesent in ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing.',
-                            tertiaryText: 'Praesent in ipsum. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet',
-                        }}
-                    />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        centerElement={{
-                            primaryText: 'Ali Connors',
-                            secondaryText: 'Brunch this weekend?',
-                            tertiaryText: 'Pellentesque commodo ultrices diam. Praesent in ipsum.',
-                        }}
-                        style={{
-                            secondaryText: { color: flattenPrimaryText.color },
-                        }}
-                    />
-                    <Subheader text="Dynamic" />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        numberOfLines="dynamic"
-                        centerElement={{
-                            primaryText: 'With dynamic second line',
-                            secondaryText: 'Lorem ipsum dolor sit amet, consectetur adipiscing. Pellentesque commodo ultrices diam. Praesent in ipsum',
-                        }}
-                        onPress={() => {}}
-                    />
-                    <Subheader text="Custom" />
-                    <ListItem
-                        divider
-                        leftElement="person"
-                        centerElement={<Text>Custom center element</Text>}
-                    />
+                    {questionCards}
                 </ScrollView>
             </View>
         );

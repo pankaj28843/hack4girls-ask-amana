@@ -15,9 +15,6 @@ const DOWN = -1;
 
 
 const styles = StyleSheet.create({
-    cardStyle: {
-        backgroundColor: 'red',
-    },
     cardContainer: {
         // width: '100%',
         flex: 1,
@@ -163,11 +160,11 @@ class Home extends Component {
             <Container>
                 {this.renderToolbar()}
                 <ScrollView
-                    keyboardShouldPersistTaps
+                    keyboardShouldPersistTaps="always"
                     keyboardDismissMode="interactive"
                     onScroll={this.onScroll}
                 >
-                    <Card style={styles.cardStyle}>
+                    <Card>
                         <View style={styles.cardContainer}>
                             <Text style={styles.cardTitle}>LEARN</Text>
                         </View>

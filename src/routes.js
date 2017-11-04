@@ -1,6 +1,7 @@
 import Home from './App/Home.react';
 import GetHelpMainPage from './GetHelp/Main.react';
 import QuestionList from './Forum/QuestionList.react';
+import QuestionPage from './Forum/QuestionPage.react';
 // components
 import ActionButton from './ActionButton';
 import ActionButtonToolbar from './ActionButton/ActionButtonToolbar.react';
@@ -29,7 +30,11 @@ export default {
     },
     questionList: {
         title: 'Ask Anything',
-        Page: QuestionList
+        Page: QuestionList,
+    },
+    question: {
+        title: 'Ask Anything',
+        Page: QuestionPage,
     },
     actionButton: {
         title: 'Action buttons',
@@ -80,7 +85,7 @@ export default {
         Page: IconToggle,
     },
     list: {
-        title: 'QuestionList items',
+        title: 'QuestionPage items',
         Page: List,
     },
     radioButton: {
