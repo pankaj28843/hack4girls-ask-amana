@@ -20,13 +20,17 @@
     "eslint-plugin-import": "^1.11.1",
     "eslint-plugin-jsx-a11y": "^2.2.0",
     "eslint-plugin-react": "^6.3.0",
+    "formik": "^0.10.0",
     "lodash.merge": "^4.6.0",
     "react": "16.0.0-alpha.6",
     "react-native": "^0.44.0",
+    "react-native-clean-form": "^0.4.2",
     "react-native-deprecated-custom-components": "^0.1.0",
     "react-native-material-design-styles": "^0.2.6",
     "react-native-material-ui": "^1.14.0",
-    "react-native-vector-icons": "^4.3.0"
+    "react-native-vector-icons": "^4.3.0",
+    "simple-react-form": "^2.0.1",
+    "simple-react-form-material-ui": "^1.7.13"
   },
   "devDependencies": {
     "prop-types": "^15.5.10"

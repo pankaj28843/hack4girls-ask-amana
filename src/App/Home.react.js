@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Animated, Easing, Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 
-import {Avatar, BottomNavigation, Card, Icon, ListItem, Toolbar,} from 'react-native-material-ui';
+import {Avatar, BottomNavigation, Card, Icon, ListItem, Toolbar, Subheader} from 'react-native-material-ui';
 
 
 import routes from '../routes';
@@ -44,6 +44,7 @@ class Home extends Component {
         this.state = {
             selected: [],
             searchText: '',
+            searchResults: null,
             toolbarHidden: false,
             active: 'people',
             moveAnimated: new Animated.Value(0),
@@ -130,7 +131,7 @@ class Home extends Component {
                 searchable={{
                     autoFocus: true,
                     placeholder: 'Search',
-                    onChangeText: value => this.setState({searchText: value}),
+                    onChangeText: query => this.search(query),
                     onSearchClosed: () => this.setState({searchText: ''}),
                 }}
             />
@@ -155,20 +156,71 @@ class Home extends Component {
         );
     }
 
+    search(query) {
+        this.setState({
+            searchText: query,
+        });
+        if (query.length < 0) {
+            this.setState({
+                searchResults: null,
+            });
+            return;
+        }
+
+        return fetch(`http://192.168.1.32:4242/search?q=${this.state.searchText}`).then(
+            response => response.json()
+        ).then(categories => {
+            categories = Array.from(Object.entries(categories));
+            const searchResults = [];
+            for(const [categoryName, matchedResults] of categories) {
+                if (matchedResults.length === 0){
+                    continue;
+                }
+                const categoryResults = matchedResults.map(obj => <ListItem
+                    key={obj.id}
+                    divider
+                    centerElement={obj.title}
+                />);
+                searchResults.push(
+                    <View key={categoryName}>
+                        <Subheader text={categoryName} />
+
+                        {categoryResults}
+                    </View>
+
+                );
+            };
+
+
+            this.setState({
+                searchResults
+            });
+
+        }).catch(error => {
+            // do something
+        });
+    }
+
     render() {
+
         return (
             <Container>
                 {this.renderToolbar()}
+                {this.state.searchResults}
                 <ScrollView
                     keyboardShouldPersistTaps="always"
                     keyboardDismissMode="interactive"
                     onScroll={this.onScroll}
                 >
-                    <Card>
+                    <Card
+                        style={styles.cardStyle}
+                        onPress={() => this.props.navigator.push(routes.getHelp)}
+                    >
                         <View style={styles.cardContainer}>
-                            <Text style={styles.cardTitle}>LEARN</Text>
+                            <Text style={styles.cardTitle}>GET HELP</Text>
                         </View>
                     </Card>
+
                     <Card
                         style={styles.cardStyle}
                         onPress={() => this.props.navigator.push(routes.questionList)}
@@ -177,12 +229,9 @@ class Home extends Component {
                             <Text style={styles.cardTitle}>ASK ANYTHING</Text>
                         </View>
                     </Card>
-                    <Card
-                        style={styles.cardStyle}
-                        onPress={() => this.props.navigator.push(routes.getHelp)}
-                    >
+                    <Card>
                         <View style={styles.cardContainer}>
-                            <Text style={styles.cardTitle}>GET HELP</Text>
+                            <Text style={styles.cardTitle}>LEARN</Text>
                         </View>
                     </Card>
 
@@ -201,55 +250,37 @@ class Home extends Component {
                     {/*{this.renderItem('Radio buttons', routes.radioButton)}*/}
                     {/*{this.renderItem('Toolbars', routes.toolbar)}*/}
                 </ScrollView>
-                {/*<ActionButton*/}
-                {/*actions={[*/}
-                {/*{ icon: 'email', label: 'Email' },*/}
-                {/*{ icon: 'phone', label: 'Phone' },*/}
-                {/*{ icon: 'sms', label: 'Text' },*/}
-                {/*{ icon: 'favorite', label: 'Favorite' },*/}
-                {/*]}*/}
-                {/*hidden={this.state.bottomHidden}*/}
-                {/*icon="share"*/}
-                {/*transition="speedDial"*/}
-                {/*onPress={(action) => {*/}
-                {/*if (Platform.OS === 'android') {*/}
-                {/*ToastAndroid.show(action, ToastAndroid.SHORT);*/}
-                {/*}*/}
-                {/*}}*/}
-                {/*style={{*/}
-                {/*positionContainer: { bottom: 76 },*/}
-                {/*}}*/}
-                {/*/>*/}
-                <BottomNavigation
-                    active={this.state.active}
-                    hidden={this.state.bottomHidden}
-                    style={{container: {position: 'absolute', bottom: 0, left: 0, right: 0}}}
-                >
-                    <BottomNavigation.Action
-                        key="today"
-                        icon={<Icon name="today"/>}
-                        label="Today"
-                        onPress={() => this.setState({active: 'today'})}
-                    />
-                    <BottomNavigation.Action
-                        key="people"
-                        icon="people"
-                        label="People"
-                        onPress={() => this.setState({active: 'people'})}
-                    />
-                    <BottomNavigation.Action
-                        key="bookmark-border"
-                        icon="bookmark-border"
-                        label="Bookmark"
-                        onPress={() => this.setState({active: 'bookmark-border'})}
-                    />
-                    <BottomNavigation.Action
-                        key="settings"
-                        icon="settings"
-                        label="Settings"
-                        onPress={() => this.setState({active: 'settings'})}
-                    />
-                </BottomNavigation>
+
+                {/*<BottomNavigation*/}
+                    {/*active={this.state.active}*/}
+                    {/*hidden={this.state.bottomHidden}*/}
+                    {/*style={{container: {position: 'absolute', bottom: 0, left: 0, right: 0}}}*/}
+                {/*>*/}
+                    {/*<BottomNavigation.Action*/}
+                        {/*key="today"*/}
+                        {/*icon={<Icon name="today"/>}*/}
+                        {/*label="Today"*/}
+                        {/*onPress={() => this.setState({active: 'today'})}*/}
+                    {/*/>*/}
+                    {/*<BottomNavigation.Action*/}
+                        {/*key="people"*/}
+                        {/*icon="people"*/}
+                        {/*label="People"*/}
+                        {/*onPress={() => this.setState({active: 'people'})}*/}
+                    {/*/>*/}
+                    {/*<BottomNavigation.Action*/}
+                        {/*key="bookmark-border"*/}
+                        {/*icon="bookmark-border"*/}
+                        {/*label="Bookmark"*/}
+                        {/*onPress={() => this.setState({active: 'bookmark-border'})}*/}
+                    {/*/>*/}
+                    {/*<BottomNavigation.Action*/}
+                        {/*key="settings"*/}
+                        {/*icon="settings"*/}
+                        {/*label="Settings"*/}
+                        {/*onPress={() => this.setState({active: 'settings'})}*/}
+                    {/*/>*/}
+                {/*</BottomNavigation>*/}
             </Container>
 
 

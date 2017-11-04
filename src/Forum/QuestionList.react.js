@@ -1,7 +1,7 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {Component, PropTypes} from 'react';
 
-import {Card, Subheader, Toolbar} from 'react-native-material-ui';
+import {Card, ActionButton, Subheader, Toolbar} from 'react-native-material-ui';
 import routes from '../routes';
 
 const styles = StyleSheet.create({
@@ -84,7 +84,18 @@ class QuestionList extends Component {
                 />
                 <ScrollView style={styles.container}>
                     {questionCards}
+                    {questionCards}
+                    {questionCards}
+                    {questionCards}
+                    {questionCards}
                 </ScrollView>
+                <ActionButton
+                    icon="sms"
+                    onPress={() => this.props.navigator.push(routes.newQuestion)}
+                    // style={{
+                    //     positionContainer: {bottom: 76},
+                    // }}
+                />
             </View>
         );
     }
