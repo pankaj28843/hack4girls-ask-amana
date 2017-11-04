@@ -172,7 +172,10 @@ class Home extends Component {
                             <Text style={styles.cardTitle}>LEARN</Text>
                         </View>
                     </Card>
-                    <Card style={styles.cardStyle}>
+                    <Card
+                        style={styles.cardStyle}
+                        onPress={() => this.props.navigator.push(routes.questionList)}
+                    >
                         <View style={styles.cardContainer}>
                             <Text style={styles.cardTitle}>ASK ANYTHING</Text>
                         </View>
