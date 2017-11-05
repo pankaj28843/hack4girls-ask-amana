@@ -1,7 +1,7 @@
-import { Text, View, StyleSheet, ScrollView, ToastAndroid, Platform } from 'react-native';
-import React, { Component, PropTypes } from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {Component, PropTypes} from 'react';
 
-import { ListItem, Subheader, Toolbar, Card } from 'react-native-material-ui';
+import {Button, Card, ListItem, Toolbar} from 'react-native-material-ui';
 
 const styles = StyleSheet.create({
     container: {
@@ -19,7 +19,7 @@ const contextTypes = {
 
 class GetHelpMainPage extends Component {
     render() {
-        const { listItem } = this.context.uiTheme;
+        const {listItem} = this.context.uiTheme;
         const flattenPrimaryText = StyleSheet.flatten(listItem.primaryText);
 
         return (
@@ -31,61 +31,76 @@ class GetHelpMainPage extends Component {
                 />
                 <ScrollView style={styles.container}>
                     <Card>
-                        <Subheader text="DOCTOR" />
+                        <Button
+                            raised primary text="DOCTOR" iconPlacement="right"
+                        />
                         <ListItem
                             divider
                             centerElement="Sickness"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
                         <ListItem
                             divider
                             centerElement="Pregnancy"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
                         <ListItem
                             divider
                             centerElement="Bleeding"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
                         <ListItem
                             divider
                             centerElement="Psychological"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
                     </Card>
 
                     <Card>
-                        <Subheader text="NGO" />
+                        <Button
+                            raised primary text="NGO" iconPlacement="right"
+                        />
                         <ListItem
                             divider
                             centerElement="Delivery Kit"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
                         <ListItem
                             divider
                             centerElement="Get child in school"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
                         <ListItem
                             divider
                             centerElement="Learn at Home"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
 
                     </Card>
 
 
                     <Card>
-                        <Subheader text="Talk to someone" />
+                        <Button
+                            raised primary text="Talk to Someone" iconPlacement="right"
+                        />
                         <ListItem
                             divider
                             centerElement="Health Professional"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
                         <ListItem
                             divider
                             centerElement="Someone of your age-group"
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                         />
 
                     </Card>

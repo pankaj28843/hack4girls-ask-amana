@@ -3,6 +3,9 @@ import GetHelpMainPage from './GetHelp/Main.react';
 import QuestionList from './Forum/QuestionList.react';
 import QuestionPage from './Forum/QuestionPage.react';
 import NewQuestionPage from './Forum/NewQuestionPage.react';
+import TopicList from './Learn/TopicList.react';
+import TopicPage from './Learn/TopicPage.react';
+
 // components
 import ActionButton from './ActionButton';
 import ActionButtonToolbar from './ActionButton/ActionButtonToolbar.react';
@@ -33,13 +36,21 @@ export default {
         title: 'All Questions',
         Page: QuestionList,
     },
-    question: {
+    topic: {
         title: 'Question Detail',
         Page: QuestionPage,
     },
     newQuestion: {
-        title: 'Ask a new question',
+        title: 'Ask a new topic',
         Page: NewQuestionPage,
+    },
+    topicList: {
+        title: 'All Topics',
+        Page: TopicList,
+    },
+    topic: {
+        title: 'Topic Detail',
+        Page: TopicPage,
     },
     actionButton: {
         title: 'Action buttons',
