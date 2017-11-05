@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Animated, Easing, Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 
-import {Avatar, BottomNavigation, Card, Icon, ListItem, Toolbar, Subheader} from 'react-native-material-ui';
+import {Avatar, Card, ListItem, Subheader, Toolbar} from 'react-native-material-ui';
 
 
 import routes from '../routes';
@@ -45,6 +45,7 @@ class Home extends Component {
             selected: [],
             searchText: '',
             searchResults: null,
+            searchInProgress: false,
             toolbarHidden: false,
             active: 'people',
             moveAnimated: new Animated.Value(0),
@@ -132,7 +133,7 @@ class Home extends Component {
                     autoFocus: true,
                     placeholder: 'Search',
                     onChangeText: query => this.search(query),
-                    onSearchClosed: () => this.setState({searchText: ''}),
+                    onSearchClosed: () => this.closeSearch(),
                 }}
             />
         );
@@ -157,23 +158,35 @@ class Home extends Component {
     }
 
     search(query) {
-        this.setState({
-            searchText: query,
-        });
-        if (query.length < 0) {
-            this.setState({
-                searchResults: null,
-            });
+
+        // this.setState({
+        //     searchText: query,
+        // });
+        query = query.trim();
+        if (query.length < 3) {
+            this.searchResults = null;
             return;
         }
 
-        return fetch(`https://askasanah.herokuapp.com/search?q=${this.state.searchText}`).then(
-            response => response.json()
-        ).then(categories => {
+        // console.log(query);
+        const url = `https://askasanah.herokuapp.com/search?q=${query}`;
+        // console.log(url);
+        this.searchInProgress = true;
+        // this.setState({
+        //     searchInProgress: true,
+        // });
+
+        return fetch(url).then(
+            response => {
+                this.searchInProgress = false;
+                return response.json();
+            }
+    ).then(categories => {
             categories = Array.from(Object.entries(categories));
             const searchResults = [];
-            for(const [categoryName, matchedResults] of categories) {
-                if (matchedResults.length === 0){
+            for (const [categoryName, matchedResults] of categories) {
+                // console.log(categoryName, matchedResults.length);
+                if (matchedResults.length === 0) {
                     continue;
                 }
                 const categoryResults = matchedResults.map(obj => <ListItem
@@ -183,29 +196,59 @@ class Home extends Component {
                 />);
                 searchResults.push(
                     <View key={categoryName}>
-                        <Subheader text={categoryName} />
+                        <Subheader text={categoryName}/>
 
                         {categoryResults}
                     </View>
-
                 );
-            };
+            }
 
+            // console.log(searchResults);
 
             this.setState({
-                searchResults
-            });
+                searchResults: searchResults,
+            })
+            // this.searchResults = searchResults;
+
+            // this.setState({
+            //     searchInProgress: false,
+            // });
 
         }).catch(error => {
-            // do something
+            // this.setState({
+            //     searchInProgress: false,
+            //     searchResults: null,
+            // });
+            this.searchResults = null;
+            this.setState({
+                searchResults: null,
+            })
         });
     }
 
+    closeSearch() {
+        this.setState({
+            searchText: '',
+            searchResults: null
+            // searchInProgress: false,
+        });
+        // this.searchResults = null;
+    }
+
+
     render() {
+
+        let searchInProgress = null;
+        if (this.searchInProgress){
+            searchInProgress = <View>
+                <Text>Loading results ...</Text>
+            </View>;
+        }
 
         return (
             <Container>
                 {this.renderToolbar()}
+                {searchInProgress}
                 {this.state.searchResults}
                 <ScrollView
                     keyboardShouldPersistTaps="always"
@@ -252,34 +295,34 @@ class Home extends Component {
                 </ScrollView>
 
                 {/*<BottomNavigation*/}
-                    {/*active={this.state.active}*/}
-                    {/*hidden={this.state.bottomHidden}*/}
-                    {/*style={{container: {position: 'absolute', bottom: 0, left: 0, right: 0}}}*/}
+                {/*active={this.state.active}*/}
+                {/*hidden={this.state.bottomHidden}*/}
+                {/*style={{container: {position: 'absolute', bottom: 0, left: 0, right: 0}}}*/}
                 {/*>*/}
-                    {/*<BottomNavigation.Action*/}
-                        {/*key="today"*/}
-                        {/*icon={<Icon name="today"/>}*/}
-                        {/*label="Today"*/}
-                        {/*onPress={() => this.setState({active: 'today'})}*/}
-                    {/*/>*/}
-                    {/*<BottomNavigation.Action*/}
-                        {/*key="people"*/}
-                        {/*icon="people"*/}
-                        {/*label="People"*/}
-                        {/*onPress={() => this.setState({active: 'people'})}*/}
-                    {/*/>*/}
-                    {/*<BottomNavigation.Action*/}
-                        {/*key="bookmark-border"*/}
-                        {/*icon="bookmark-border"*/}
-                        {/*label="Bookmark"*/}
-                        {/*onPress={() => this.setState({active: 'bookmark-border'})}*/}
-                    {/*/>*/}
-                    {/*<BottomNavigation.Action*/}
-                        {/*key="settings"*/}
-                        {/*icon="settings"*/}
-                        {/*label="Settings"*/}
-                        {/*onPress={() => this.setState({active: 'settings'})}*/}
-                    {/*/>*/}
+                {/*<BottomNavigation.Action*/}
+                {/*key="today"*/}
+                {/*icon={<Icon name="today"/>}*/}
+                {/*label="Today"*/}
+                {/*onPress={() => this.setState({active: 'today'})}*/}
+                {/*/>*/}
+                {/*<BottomNavigation.Action*/}
+                {/*key="people"*/}
+                {/*icon="people"*/}
+                {/*label="People"*/}
+                {/*onPress={() => this.setState({active: 'people'})}*/}
+                {/*/>*/}
+                {/*<BottomNavigation.Action*/}
+                {/*key="bookmark-border"*/}
+                {/*icon="bookmark-border"*/}
+                {/*label="Bookmark"*/}
+                {/*onPress={() => this.setState({active: 'bookmark-border'})}*/}
+                {/*/>*/}
+                {/*<BottomNavigation.Action*/}
+                {/*key="settings"*/}
+                {/*icon="settings"*/}
+                {/*label="Settings"*/}
+                {/*onPress={() => this.setState({active: 'settings'})}*/}
+                {/*/>*/}
                 {/*</BottomNavigation>*/}
             </Container>
 
