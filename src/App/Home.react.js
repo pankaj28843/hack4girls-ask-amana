@@ -167,7 +167,7 @@ class Home extends Component {
             return;
         }
 
-        return fetch(`http://192.168.1.32:4242/search?q=${this.state.searchText}`).then(
+        return fetch(`https://askasanah.herokuapp.com/search?q=${this.state.searchText}`).then(
             response => response.json()
         ).then(categories => {
             categories = Array.from(Object.entries(categories));

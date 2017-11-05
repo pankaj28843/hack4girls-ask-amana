@@ -22,7 +22,7 @@ import Toolbar from './Toolbars';
 
 export default {
     home: {
-        title: 'Ask Amana!',
+        title: 'Ask Amanah!',
         Page: Home,
     },
     getHelp: {
